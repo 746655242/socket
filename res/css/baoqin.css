@@ -1,0 +1,72 @@
+﻿.btn-b,.u-pic{ width:.31rem; height:.31rem; margin-right:.15rem; background-position:-0.5rem -0.9rem; display:inline-block; vertical-align:middle;}
+.btn-bon{ background-position:-0.5rem  -1.35rem;}
+.u-pic{ background-position:-0.5rem -1.8rem;}
+
+.comment{ position:fixed; bottom:0; left:0; right:0; z-index:9; background:#fff;}
+.edit{ box-sizing:border-box; background:#f5f5f5;  border-top:1px solid #e3e3e3; width:100%; height:.48rem; padding: 0.06rem .7rem 0.07rem .9rem; }
+.edit input,.edit textarea{ border:1px solid #e3e3e3; background:#fff; display:block; width:100%; height:100%; font-size:.14rem; text-indent:.1rem;}
+.edit-b{position:absolute; left:.1rem; top:.1rem;    margin:0;}
+.edit-pic{position:absolute;   left:.5rem;   top:.1rem;   margin:0;}
+.comment .biaoqing{ position:relative;}
+
+.tupian{ margin-left:3%; overflow:hidden; background:#fff;}
+.tupian li{ width:21%; float:left;margin-right:4%; position:relative; margin-top:.1rem;margin-bottom:.2rem;}
+.tupian li .btn_close{ width:.23rem; height:.23rem; position:absolute; top:-0.1rem;right:-0.125rem; background-position:-0.5rem -2.25rem;  z-index:99;}
+.picfile{ width:.35rem; height:.35rem; opacity:0; overflow:hidden;}
+.btn-send{ background:#00a350; color:#fff;}
+.edit-send{ position:absolute; right:.1rem; top:.07rem; background:#00a350; color:#fff; width:.5rem; height:.35rem; line-height:.35rem; text-align:center; font-style:normal; }
+
+/*表情*/
+.biaoqing {
+	overflow:hidden;
+	border-top: 1px solid #e1e1e1;
+	position:fixed;
+	white-space: nowrap;
+	display:-webkit-box;
+	display:-moz-box;
+	display:box;
+	bottom:0;
+	left:0; 
+	right:0;
+}
+.biaoqing .ul{
+	display:block;
+	float:left; 
+	width:100%;
+	vertical-align:top;
+	position:relative;
+	background:#fff;
+	padding:.1rem;
+	overflow: hidden;
+}
+.z-ix{ z-index:100;}
+.biaoqing ul{	
+	display: -webkit-box!important;
+    display: -webkit-flex!important;
+    display: -ms-flexbox!important;
+    display: flex!important;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+
+	
+	
+}
+.biaoqing li{ 
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: hidden;
+   
+}
+.biaoqing li img{
+	width:.2rem;
+	height:.2rem;
+	padding:.1rem;
+	margin: 0 auto;
+}
+.pointer{position:fixed;left:0;bottom:0;width:100%;padding:5px 0;text-align:center;line-height:1;font-size:0; z-index:999;}
+.pointer i{display:inline-block;width:5px;height:2px;background:#d9d9d9;margin:2px;overflow:hidden;text-indent:-100%}
+.pointer i.on{width:10px;background:#999}
+

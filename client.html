@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>WebSocket Echo Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <style>
+    #box{ border:1px solid #999; height:600px; width:700px; overflow-y:scroll;}
+    </style>
+    
+    <script>
+	var id=1;//聊天室id
+	var uid=localStorage.uid;
+    var ws = new WebSocket("ws://localhost:8181");
+    ws.onopen = function(e){
+		var otext={'id':id,'uid':uid};
+		var string = JSON.stringify(otext)
+		ws.send(string);
+        console.log('连接到服务器打开');
+    }
+	
+	ws.onmessage=function(evt){
+		 var data =eval('('+evt.data+')');//转对象
+		 console.log(data);
+		 var state=data['state'];
+		 if(state==1){
+			localStorage.uid=data['uid'];	
+		 	return false;
+		 }
+		 var text=data['msg'];
+		 
+		 var textnode=document.createElement('div');
+		 textnode.innerHTML=text;
+		 var box=document.getElementById('box');
+		 box.appendChild(textnode);
+		 console.log("数据已接收...");
+	}
+	
+	ws.onclose = function(){
+         console.log("连接已关闭..."); 
+     };
+	
+    function sendMessage() {
+		var text=document.getElementById('message').value;
+		var otext={'id':id,'text':text,'uid':uid};
+		var string = JSON.stringify(otext)
+		console.log('发送成功:'+string);
+        ws.send(string);
+    }
+    </script>
+</head>
+
+<body >
+    <div class="vertical-center">
+        <div class="container">
+            <p id="box"></p>
+            <form role="form" id="chat_form" onsubmit="sendMessage(); return false;">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="message" id="message"
+                           placeholder="发送消息" value="" />
+                </div>
+                <button type="button" id="send" class="btn btn-primary"
+                        onclick="sendMessage();">
+                    发送
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

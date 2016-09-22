@@ -1,0 +1,1 @@
+function size(){var j=100;var f=320;var i=document.documentElement.clientWidth||window.innerWidth;var g=Math.max(Math.min(i,480),320);var h=100;if(g>362&&g<=375){h=Math.floor(g/f*j*0.9)}if(g>375){h=Math.floor(g/f*j*0.84)}window.__baseREM=h;document.querySelector("html").style.fontSize=h+"px"}(function(){size()}());window.onload=function(){window.onresize=function(){size()}};
