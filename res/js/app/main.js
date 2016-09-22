@@ -1,11 +1,10 @@
-define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit,Pinch){
+define(['jquery','models/uppic','models/edit','models/pinch','models/base'],function($,Up,edit,Pinch,Base){
 	var chat={
 		init:function(){
 			var _this=this;
-			_this.id=1;//聊天室id
+			_this.id=id;//聊天室id
 			_this.uid=localStorage.uid;	
-			_this.ws = new WebSocket("ws://hemaj.com:8181");
-
+			_this.ws = new WebSocket("ws://127.0.0.1:8181");
 			this.imbox();
 			this.socket();
 			this.slide();
@@ -16,7 +15,6 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 		imbox:function(){
 			var h=$(window).height()-$('.home-header').height()-$('.comment').height();;
 			$('.im').height(h);
-			
 		},
 		send:function(obj,_this){//发送消息	
 			_this.pic=[];
@@ -25,7 +23,6 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 				if(img['width']>320&&!(/image\/gif/g).test(img['src'])){//当图片大于320进行压缩
 					_this.thumbnail(obj['pic'][i],function(imgdata){
 						_this.pic.push(imgdata);
-				
 					});
 				}else{
 					_this.pic.push(img);
@@ -35,7 +32,8 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 			setTimeout(function(){	
 				_this.uid=localStorage.uid;	
 				obj['pic']=_this.pic;						
-				var otext={'id':_this.id,'text':obj,'uid':_this.uid,'user':user};//房间号，数据对象，用户ID
+				obj['date']=Base.GetDateT();
+				var otext={'state':2,'id':_this.id,'text':obj,'uid':_this.uid,'user':user};//房间号，数据对象，用户ID
 				var string =JSON.stringify(otext);
 				_this.ws.send(string);
 				console.log('发送成功');
@@ -47,6 +45,8 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 			var user=data['user'];
 			var obj=data['obj'];
 			var uid=data['uid'];
+			var date=obj['date'];
+			console.log(date);
 			
 			var pic='';
 			for(var i=0;i<obj['pic'].length;i++){
@@ -54,9 +54,9 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 			}
 			
 			if(uid==_this.uid){
-				var html='<div class="im-news im-fr "><div class="im-line"><div class="im-icon"><img src="'+user['pic']+'"></div><div class="im-name">'+user['name']+'</div><div class="im-text  fr"><i class="triangle"></i><span></span>'+pic+obj['text']+'</div></div></div>';
+				var html='<div class="im-news im-fr "><div class="im-line"><div class="im-icon"><img src="'+user['pic']+'"></div><div class="im-name">'+date+' '+user['name']+'</div><div class="im-text  fr"><i class="triangle"></i><span></span>'+pic+obj['text']+'</div></div></div>';
 			}else{
-				var html='<div class="im-news"><div class="im-line "><div class="im-icon"><img src="'+user['pic']+'"></div><div class="im-name">'+user['name']+'</div><div class="prelative im-text rds-5"><i class="triangle"></i><span></span>'+pic+obj['text']+'</div></div></div>';
+				var html='<div class="im-news"><div class="im-line "><div class="im-icon"><img src="'+user['pic']+'"></div><div class="im-name">'+user['name']+' '+date+'</div><div class="prelative im-text rds-5"><i class="triangle"></i><span></span>'+pic+obj['text']+'</div></div></div>';
 				
 			}
 
@@ -68,7 +68,8 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 			var _this=this;
 			
 			_this.ws.onopen = function(){//打开
-				var otext={'id':_this.id,'uid':_this.uid,'user':user};
+				
+				var otext={'state':1,'id':_this.id,'uid':_this.uid,'user':user};
 				var string = JSON.stringify(otext)
 				_this.ws.send(string);
 			}
@@ -79,7 +80,12 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 				if(state==1){//状态为1时，创建新ID
 					localStorage.uid=data['uid'];		
 					return false;
-			 	}
+			 	}else if(state==3){
+					var clients=data['clients'];
+					console.log(clients);
+					_this.crowd(clients);
+					return false;
+				}
 				_this.message(data);
 			}
 			
@@ -116,10 +122,7 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 				
 			}
 			img.src=data.src;
-		
-			
-		
-				
+	
 		},
 		maxpic:function(){//显示大图
 			var _this=this;
@@ -161,12 +164,26 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 				
 			});		
 		},
-		online:function(){//查看在线人数
-			$('#online').on('click',function(){
+		crowd:function(data){//查看成员
+				var html="";
+				for(var i in data){
+					html+='<li><a href="#"><div class="people-pic"><img src="'+data[i]['pic']+'" width="110" height="110"></div><span>'+data[i]['name']+'</span><span class="right follow">在线</span></a></li>'; 
+				}
+				$('#renshu').html('('+data.length+')');
+				$('.people-box ul').html(html);
 				$('.home-header').hide();
 				$('.chat-box').hide();
 				$('.comment').hide();
 				$(".people-mian").show();
+		},
+		online:function(){//查看在线人数
+			var _this=this;
+			$('#online').on('click',function(){
+				var data={'state':3,'id':_this.id}
+				var string = JSON.stringify(data)
+				_this.ws.send(string);
+				
+				
 			});	
 			$('#colse-p').on('click',function(){
 				$('.home-header').show();
@@ -188,7 +205,7 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 			if(!user){	
 				$('.hei-bg').show();			
 				$('#uppic').change(function(){
-						Up.init(this.files[0],src,{'width':250,'height':250});
+						Up.init(this.files[0],src,{'width':120,'height':120});
 						function src(data){
 							$('#upimg').attr('src',data);	
 						}
@@ -199,6 +216,10 @@ define(['jquery','models/uppic','models/edit','models/pinch'],function($,Up,edit
 						var pic=$('#upimg').attr('src');
 						var data={"name":name,"pic":pic}
 						
+						if(!name){
+							alert('请输入名字');
+							return false;
+						}
 						if($(this).is('.on')){ return false;}
 						$(this).addClass('on');
 						

@@ -44,19 +44,23 @@ function route(app,urlencodedParser,config){
 
  	})*/
 	
-	app.get('/', function (req,res) {	
+	app.get('/chat/', function (req,res){//创建聊天室
 		var jsobj=require('./app/mian/chat');
 		jsobj.init(req,res,config);	
  	})
+	app.get('/chat/:id', function (req,res){//创建聊天室房间
+		var jsobj=require('./app/mian/chatid');
+		jsobj.init(req,res,config);	
+ 	})
 	
-	app.post('/api/user',urlencodedParser,function(req,res){
+	app.post('/api/user',urlencodedParser,function(req,res){//上传头像
 		var jsobj=require('./app/Api/user');
 		jsobj.init(req,res,config);	
 		
 	});
 	
 	app.get('*', function(req, res){
-		res.send('没有当前页面');
+		res.send('404页面，迷路了！');
 	});
 		
 	return route;

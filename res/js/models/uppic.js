@@ -141,14 +141,14 @@ define(['jquery','exif','models/pinch','models/drawipone'],function($,E,Pinch,Dr
 					var oimg= new Image();
 					oimg.onload=function(){				
 						context.drawImage(this,sx/shuoxiao,sy/shuoxiao,sw/shuoxiao,sw/shuoxiao,0,0,dw,dh);//向画布上绘制图像
-						var imageData = canvas.toDataURL('image/jpg');//设置格式  
+						var imageData = canvas.toDataURL('image/jpg',0.6);//设置格式  
 						imgdata(imageData);
 					}
 					oimg.src=imageData;	
 				});
 			}else{
 				context.drawImage(image,sx,sy,sw,sw,0,0,dw,dh);//向画布上绘制图像
-				var imageData = canvas.toDataURL('image/jpg');//设置格式  
+				var imageData = canvas.toDataURL('image/jpg',0.6);//设置格式  
 				imgdata(imageData);
 			}
 			
