@@ -4,7 +4,7 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 			var _this=this;
 			_this.id=id;//聊天室id
 			_this.uid=localStorage.uid;	
-			_this.ws = new WebSocket("ws://127.0.0.1:8181");
+			_this.ws = new WebSocket(Base.config['ws']);
 			this.imbox();
 			this.socket();
 			this.slide();
@@ -15,6 +15,7 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 		imbox:function(){
 			var h=$(window).height()-$('.home-header').height()-$('.comment').height();;
 			$('.im').height(h);
+			
 		},
 		send:function(obj,_this){//发送消息	
 			_this.pic=[];
@@ -27,11 +28,10 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 				}else{
 					_this.pic.push(img);
 				}
-				
 			}
 			setTimeout(function(){	
 				_this.uid=localStorage.uid;	
-				obj['pic']=_this.pic;						
+				obj['pic']=_this.pic;	
 				obj['date']=Base.GetDateT();
 				var otext={'state':2,'id':_this.id,'text':obj,'uid':_this.uid,'user':user};//房间号，数据对象，用户ID
 				var string =JSON.stringify(otext);
@@ -46,7 +46,6 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 			var obj=data['obj'];
 			var uid=data['uid'];
 			var date=obj['date'];
-			console.log(date);
 			
 			var pic='';
 			for(var i=0;i<obj['pic'].length;i++){
@@ -66,9 +65,7 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 		},
 		socket:function(){
 			var _this=this;
-			
-			_this.ws.onopen = function(){//打开
-				
+				_this.ws.onopen = function(){//打开
 				var otext={'state':1,'id':_this.id,'uid':_this.uid,'user':user};
 				var string = JSON.stringify(otext)
 				_this.ws.send(string);
@@ -77,21 +74,33 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 			_this.ws.onmessage=function(evt){//收到消息
 				var data =eval('('+evt.data+')');//转对象
 				var state=data['state'];
-				if(state==1){//状态为1时，创建新ID
-					localStorage.uid=data['uid'];		
+				if(state==404){
+					alert('当前房间不存在');
+					window.location.href='/chat/';
 					return false;
-			 	}else if(state==3){
+				}else if(state==1){//状态为1时，创建新ID
+					localStorage.uid=data['uid'];	
+						var title=data['title'];
+						var miaoshu=data['miaoshu'];
+						$('title').html(title);
+						$('#hd-logo').html(title);
+						$('.message').html('【聊天室群】：'+miaoshu);
+					return false;
+			 	}else if(state==2){
+					_this.message(data);
+					return false;
+				}else if(state==3){
 					var clients=data['clients'];
 					console.log(clients);
 					_this.crowd(clients);
 					return false;
 				}
-				_this.message(data);
 			}
 			
 			_this.ws.onclose = function(e){//关闭
 				 console.log("连接已关闭..."); 
 			 };
+			
 		},
 		scrolltop:function(html){//dom处理
 			$('.im-mian').append(html);
@@ -122,7 +131,7 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 				
 			}
 			img.src=data.src;
-	
+		
 		},
 		maxpic:function(){//显示大图
 			var _this=this;
@@ -205,21 +214,22 @@ define(['jquery','models/uppic','models/edit','models/pinch','models/base'],func
 			if(!user){	
 				$('.hei-bg').show();			
 				$('#uppic').change(function(){
-						Up.init(this.files[0],src,{'width':120,'height':120});
+						Up.init(this.files[0],src,{'width':250,'height':250});
 						function src(data){
 							$('#upimg').attr('src',data);	
 						}
 				});
 				
 				$('#userbtn').on('click',function(){
-						var name=$('#upname').val();
-						var pic=$('#upimg').attr('src');
-						var data={"name":name,"pic":pic}
+						var name=$('input[name="name"]').val();
+						var pw=$('input[name="pw"]').val();
+						var pw2=$('input[name="pw2"]').val();
+						if(pw!==pw2){alert('两次密码不相同');return false;}
+						var nickname=$('input[name="nickname"]').val();
 						
-						if(!name){
-							alert('请输入名字');
-							return false;
-						}
+						var pic=$('#upimg').attr('src');
+						var data={"name":name,"pic":pic,'pw':pw,'nickname':nickname};
+						
 						if($(this).is('.on')){ return false;}
 						$(this).addClass('on');
 						

@@ -20,13 +20,12 @@
 
 </head>
 <body >
-<!--js事件-->
-<div id="url" data-url="chat" hidden=""></div>
+
 
 <header class="home-header">
     <div class="hd-wrap">
         <a class="left" href="javascript:history.go(-1);"><div class="icon loginicon return"></div></a>
-      	<h1 class="hd-logo"><a href="/news/cat/10">阅后即焚聊天室</a></h1>
+      	<h1 class="hd-logo" id="hd-logo"></h1>
         <a id="online" class="right"><div class="cy"></div></a>
         
     </div>	 
@@ -35,7 +34,7 @@
 <section class="chat-box">
 	<div class="im">
         		<div class="im-mian of">
-					 <div class="message">【系统消息】：<span>好消息</span>阅后即焚在线聊天室上线，不留任何痕迹，绝对安全！</div>	
+					 <div class="message"></div>	
                       <div class="more-load"  style="display:none"></div>
                       
                       
@@ -69,8 +68,12 @@
 
 <div class="hei-bg">
 	<div class="user-info">
+    	<div class="tc">注册</div>
     	<div class="user-pic"><input id="uppic"  type="file" ><img id="upimg" src="/img/userpic.jpg"></div>
-    	<div><input class="name box tc" type="text" id="upname"  placeholder="输入名字"></div>
+    	<div><input class="name box tc" type="text" id="upname" name="name"  placeholder="登陆名"></div>
+        <div><input class="name box tc" type="password" name="pw"  placeholder="密码"></div>
+        <div><input class="name box tc" type="password" name="pw2"  placeholder="密码"></div>
+        <div><input class="name box tc" type="text" name="nickname"  placeholder="昵称"></div>
         <div><div id="userbtn" class="bg-main tc userbtn">确定</div></div>
     </div>
 

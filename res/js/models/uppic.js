@@ -4,7 +4,8 @@ define(['jquery','exif','models/pinch','models/drawipone'],function($,E,Pinch,Dr
 			var _this=this;
 			var config={
 				'width':200,
-				'height':200
+				'height':200,
+				'bili':1//比例
 			};
 			if(!data){
 				return false;
@@ -12,9 +13,10 @@ define(['jquery','exif','models/pinch','models/drawipone'],function($,E,Pinch,Dr
 			options= $.extend({},config,options);//合并事件		
 			_this.options=options;
 			_this.width=$(window).width();
-			var Mtop=_this.width/2;
+			var Mheight=$(window).width()*options['bili'];
+			var Mtop=Mheight/2;
 			
-			var html='<div id="uppicBox" style="display: block;"><div class="imageBox"><div class="thumbBox box" style="height:'+_this.width+'px;margin-top:-'+Mtop+'px"></div></div><div class="bottom"><span id="clsoe">取消</span><span id="imagebtn" class="fr">选取</span></div></div>';
+			var html='<div id="uppicBox" style="display: block;"><div class="imageBox"><div class="thumbBox box" style="height:'+Mheight+'px;margin-top:-'+Mtop+'px"></div></div><div class="bottom"><span id="clsoe">取消</span><span id="imagebtn" class="fr">选取</span></div></div>';
 			$('body').append(html);	
 					
 			var fileReader = new FileReader();
@@ -48,6 +50,7 @@ define(['jquery','exif','models/pinch','models/drawipone'],function($,E,Pinch,Dr
 			fileReader.readAsDataURL(data);	
 		},
 		onpanend:function(){//手离开事件
+			
 			var scale=_this.transform['scale'];
 			var tx=_this.transform['x'];
 			var ty=_this.transform['y'];

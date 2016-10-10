@@ -1,5 +1,8 @@
 function route(app,urlencodedParser,config){
 
+
+	
+	
  //  主页输出 "Hello World"
 	/*var luyou=[
 
@@ -18,7 +21,6 @@ function route(app,urlencodedParser,config){
 	//数据绑定
 	for(var i in luyou){
 		var url=luyou[i]['url'],type=luyou[i]['type'],path=luyou[i]['path'];
-		console.log(i);
 		if(type=='get'){
 			app.get(url,urlencodedParser,function(req,res){
 				var jsobj=require(path);
@@ -31,36 +33,46 @@ function route(app,urlencodedParser,config){
 			});
 		}
 	}
-	
 
-	
 	var path=require('path');
 
 	var fs=require("fs");
 	
 	app.get('/', function (req, res) {
-		 res.send('你好!');
+		 res.send('你好,欢迎来聊天室!');
 		// res.sendFile( __dirname + "/" +'html/home/index.html');
 
- 	})*/
+ 	})
+	*/
 	
-	app.get('/chat/', function (req,res){//创建聊天室
+
+	app.get('/', function (req,res){
+		console.log(req.session.user);
+		
 		var jsobj=require('./app/mian/chat');
 		jsobj.init(req,res,config);	
  	})
-	app.get('/chat/:id', function (req,res){//创建聊天室房间
+	
+	app.get('/home/', function (req,res) {			
+		res.locals= {title: '我是中国人', cc: '中国的',layout:'common/common'};//传给页面参数,layout继承公共文件 
+		res.render('home',{title: '我是中国人',layout:'common/common'});
+		
+ 	})
+	
+	app.get('/chat/:id', function (req,res) {
+		console.log(req.session.user);
 		var jsobj=require('./app/mian/chatid');
 		jsobj.init(req,res,config);	
  	})
 	
-	app.post('/api/user',urlencodedParser,function(req,res){//上传头像
+	app.post('/api/user',urlencodedParser,function(req,res){		
 		var jsobj=require('./app/Api/user');
 		jsobj.init(req,res,config);	
 		
 	});
 	
 	app.get('*', function(req, res){
-		res.send('404页面，迷路了！');
+		res.send('404');
 	});
 		
 	return route;

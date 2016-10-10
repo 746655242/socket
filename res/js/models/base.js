@@ -1,5 +1,8 @@
 define(function(){
 	return{
+		config:{
+			'ws':'ws://127.0.0.1:8181'
+		},
 		GetDateT:function(){
 			  var d,s;
 			  d = new Date();

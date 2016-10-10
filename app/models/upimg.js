@@ -33,6 +33,7 @@ function upimg(data,path,fn){
 	  }
 	  console.log('图片储存成功');
 	  path=path.replace(/Uploads\//,'');//去掉默认上传图片文件目录
+	  path=path.substring(1);
 	  console.log(path);
 	  fn(path); 
    });

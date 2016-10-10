@@ -7,11 +7,49 @@
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
 <meta content="telephone=no, email=no" name="format-detection">
 <meta content="no" name="wap-font-scale">
-<title>创建聊天室</title>
+<title>阅后即焚聊天室-河马家</title>
 <script src="/js/lib/fontSize.js"></script>
-
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/chat.css">
+{{{user}}}
+{{{title}}}
+<script src="/js/lib/require.js"  data-main="/js/chat.js"></script>
+<script src="http://hm.baidu.com/hm.js?c8c3ada4ad184a1f1e766a8577e18395" defer></script>
 </head>
 <body >
-<a href="/chat/1">阅后即焚聊天室1</a>
+
+
+
+<header class="home-header">
+    <div class="hd-wrap">
+      	<h1 class="hd-logo"><a href="/news/cat/10">阅后即焚聊天室</a></h1>  
+    </div>	 
+</header>
+                       
+<section class="chat-list-box ">
+	<h2 class="chat-title-h2">在线聊天室</h2>
+	<ul class="chat-list-ul">
+    	
+    </ul>
+    
+    
+
+</section>
+
+
+<div class="chatbtn">创建聊天室</div>
+
+
+<div class="hei-bg" >
+	<div class="user-info">
+    	<div class="tc">请上传聊天室头像</div>
+    	<div class="user-pic picw320"><input id="uppic"  type="file" ><img id="upimg" src="/img/bbb.jpg"></div>
+    	<div><input class="name box tc" type="text" name="ltitle"  placeholder="聊天室标题(10个字内)"></div>
+        <div><input class="name box tc" type="text" name="miaoshu"  placeholder="聊天室群规(30个字内)"></div>
+        <div style=" display:none;"><input hidden="" class="name box tc" type="text" name="renshu"  placeholder="同时在线人数"></div>
+        <div style=" display:none;"><input hidden="" class="name box tc" type="text" name="mima"  placeholder="设置密码，默认无"></div>
+        <div><div id="userbtn" class="bg-main tc userbtn">确定</div></div>
+    </div>
+</div>
 </body>
 </html>

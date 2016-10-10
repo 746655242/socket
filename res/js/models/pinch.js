@@ -29,14 +29,16 @@ define(['hammer'],function(Hammer){// 图片手式操作事件处理
    			mc.get('singletap').requireFailure('doubletap');
 				
 			
-			console.log('222');
+		
 			mc.on("pinchstart pinchmove",this.onpinchin);
 			mc.on("panstart panmove",this.onPan);
 			if(ontap){mc.on("singletap",ontap);}
 			mc.on("doubletap",this.ondoubletap);
 			if(rethis){	mc.on('panend',rethis);}
+			
 		},
 		onPan:function(ev){//拖动事件
+			console.log('2');
 			if(ev.type == 'panstart') {
 				x=_this.transform['x']||0;
 				y=_this.transform['y']||0;
